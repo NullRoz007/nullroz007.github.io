@@ -1,43 +1,47 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<style>
-			body {
-				margin: 0;
-				padding: 0;
-				overflow: hidden;
-			}
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/nes.css/css/nes.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Press Start 2P', cursive;
+        }
 
-			#video-background {
-				position: fixed;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				z-index: -1;
-			}
+        #video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
 
-			#content {
-				position: relative;
-				z-index: 1;
-				text-align: center;
-				padding: 20px;
-				color: white;
-				font-size: 24px;
-				font-family: Arial, sans-serif;
-			}
-		</style>
-	</head>
-	<body>
-		<video id="video-background" autoplay muted loop>
-			<source src="https://github.com/NullRoz007/nullroz007.github.io/raw/master/assets/safety720.mp4" type="video/mp4">
-			<!-- Fallback text if the video cannot be loaded -->
-			Your browser does not support HTML5 video.
-		</video>
+        #footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+			height: 100px;
+            z-index: 1;
+			background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <video id="video-background" autoplay muted loop>
+        <source src="https://github.com/NullRoz007/nullroz007.github.io/raw/master/assets/safety720.mp4" type="video/mp4">
+        <!-- Fallback text if the video cannot be loaded -->
+        Your browser does not support HTML5 video.
+    </video>
 
-		<div id="content">
-			<h1>Welcome to MoveX!</h1>
-			<p>Please review our safety rules :)</p>
-		</div>
-	</body>
+    <div id="footer" class="nes-container with-title">
+        <p class="title">Session times</p>
+    </div>
+
+    <script src="https://unpkg.com/nes.css/js/nes.min.js"></script>
+</body>
 </html>
