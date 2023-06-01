@@ -25,9 +25,20 @@
             bottom: 0;
             left: 0;
             width: 100%;
-			height: 100px;
+            height: 65px;
             z-index: 1;
-			background-color: white;
+            background-color: white;
+			font-size: 12px;
+        }
+		
+		#footer-inner {
+			display: flex;
+            align-items: left;
+			margin-top: 0px;
+		}
+		
+		#session-time {
+            margin-left: 10px; /* Added to create some space between the text and time */
         }
     </style>
 </head>
@@ -40,8 +51,61 @@
 
     <div id="footer" class="nes-container with-title">
         <p class="title">Session times</p>
+		<div id="footer-inner"> 
+			<span>Next session at: </span>
+			<p id="session-time"></p>
+		</div>
     </div>
 
     <script src="https://unpkg.com/nes.css/js/nes.min.js"></script>
+    <script>
+        var sessions = {
+            "09:00": "green",
+            "09:30": "red",
+            "10:00": "blue",
+            "10:30": "purple",
+            "11:00": "yellow",
+            "11:30": "pink",
+            "12:00": "orange",
+            "12:30": "green",
+            "13:00": "red",
+            "13:30": "blue",
+            "14:00": "purple",
+            "14:30": "yellow",
+            "15:00": "pink",
+            "15:30": "orange",
+            "16:00": "green",
+            "16:30": "red",
+            "17:00": "blue"
+        };
+
+        function updateNextSessionTime() {
+            var sessionTimeElement = document.getElementById('session-time');
+            var currentTime = new Date();
+            var currentHour = currentTime.getHours();
+            var currentMinute = currentTime.getMinutes();
+
+            var nextSessionTime = Object.keys(sessions).find(function(session) {
+                var hour = parseInt(session.split(':')[0]);
+                var minute = parseInt(session.split(':')[1].slice(0, 2));
+
+                return hour > currentHour || (hour === currentHour && minute >= currentMinute);
+            });
+
+            if (nextSessionTime) {
+                sessionTimeElement.textContent = nextSessionTime;
+                sessionTimeElement.style.color = sessions[nextSessionTime];
+            } else {
+                sessionTimeElement.textContent = 'No more sessions today';
+                sessionTimeElement.style.color = 'black';
+            }
+        }
+
+        // Update next session time immediately
+        updateNextSessionTime();
+
+        // Update next session time every minute
+        setInterval(updateNextSessionTime, 60000);
+    </script>
 </body>
 </html>
