@@ -28,32 +28,46 @@
             height: 65px;
             z-index: 1;
             background-color: white;
-			font-size: 12px;
+			font-size: 18px;
         }
 		
 		#footer-inner {
+			width: 100%;
 			display: flex;
-            align-items: left;
-			margin-top: 0px;
+			align-items: right;
+			
 		}
 		
-		#session-time {
+		#current-session-time {
             margin-left: 10px; /* Added to create some space between the text and time */
+			
+        }
+		
+		#spacer {
+			flex-grow: 4;
+		}
+		
+		#next-session-time {
+			margin-left: 10px; /* Added to create some space between the text and time */
         }
     </style>
-</head>
-<body>
+	</head>
+	<body>
     <video id="video-background" autoplay muted loop>
         <source src="https://github.com/NullRoz007/nullroz007.github.io/raw/master/assets/safety720.mp4" type="video/mp4">
         <!-- Fallback text if the video cannot be loaded -->
         Your browser does not support HTML5 video.
     </video>
 
-    <div id="footer" class="nes-container with-title">
+    <div id="footer" class="nes-container is-centered with-title">
         <p class="title">Session times</p>
+			
 		<div id="footer-inner"> 
+			<span>Current Session</span>:
+			<p id="current-session-time"></p>
+			<div id="spacer"></div>
 			<span>Next session at</span>
-			<p id="session-time"></p>
+			<p id="next-session-time"></p>
 		</div>
     </div>
 
@@ -80,32 +94,84 @@
         };
 
         function updateNextSessionTime() {
-            var sessionTimeElement = document.getElementById('session-time');
-            var currentTime = new Date();
-            var currentHour = currentTime.getHours();
-            var currentMinute = currentTime.getMinutes();
+			var sessionTimeElement = document.getElementById('next-session-time');
+			var currentTime = new Date();
+			var currentHour = currentTime.getHours();
+			var currentMinute = currentTime.getMinutes();
 
-            var nextSessionTime = Object.keys(sessions).find(function(session) {
-                var hour = parseInt(session.split(':')[0]);
-                var minute = parseInt(session.split(':')[1].slice(0, 2));
+			var nextSessionTime = Object.keys(sessions).find(function(session) {
+				var hour = parseInt(session.split(':')[0]);
+				var minute = parseInt(session.split(':')[1].slice(0, 2));
 
-                return hour > currentHour || (hour === currentHour && minute >= currentMinute);
-            });
+				return hour > currentHour || (hour === currentHour && minute >= currentMinute);
+			});
 
-            if (nextSessionTime) {
-                sessionTimeElement.textContent = nextSessionTime;
-                sessionTimeElement.style.color = sessions[nextSessionTime];
-            } else {
-                sessionTimeElement.textContent = 'No more sessions today';
-                sessionTimeElement.style.color = 'black';
-            }
-        }
+			if (nextSessionTime) {
+				var hour = parseInt(nextSessionTime.split(':')[0]);
+				var minute = nextSessionTime.split(':')[1].slice(0, 2);
+				var period = hour >= 12 ? 'PM' : 'AM';
+
+				// Convert hour to 12-hour format
+				hour = hour % 12;
+				if (hour === 0) {
+					hour = 12;
+				}
+
+				// Format the time as "hh:mm AM/PM"
+				var formattedTime = hour.toString().padStart(2, '0') + ':' + minute.padStart(2, '0') + ' ' + period;
+
+				sessionTimeElement.textContent = formattedTime;
+				sessionTimeElement.style.color = sessions[nextSessionTime];
+			} else {
+				sessionTimeElement.textContent = 'No more sessions today';
+				sessionTimeElement.style.color = 'black';
+			}
+		}
+
+		function updateCurrentSessionTime() {
+		  var currentTime = new Date();
+		  var currentHour = currentTime.getHours();
+		  var currentMinute = currentTime.getMinutes();
+
+		  var currentSession = Object.keys(sessions).find(function(session) {
+			var hour = parseInt(session.split(':')[0]);
+			var minute = parseInt(session.split(':')[1].slice(0, 2));
+
+			return hour === currentHour && minute <= currentMinute && currentMinute < minute + 30;
+		  });
+
+		  var sessionTimeElement = document.getElementById('current-session-time');
+
+		  if (currentSession) {
+			var hour = parseInt(currentSession.split(':')[0]);
+			var minute = currentSession.split(':')[1].slice(0, 2);
+			var period = hour >= 12 ? 'PM' : 'AM';
+			var color = sessions[currentSession];
+			// Convert hour to 12-hour format
+			hour = hour % 12;
+			if (hour === 0) {
+			  hour = 12;
+			}
+
+			// Format the time as "hh:mm AM/PM"
+			var formattedTime = hour.toString().padStart(2, '0') + ':' + minute.padStart(2, '0') + ' ' + period;
+			var formattedColor = color.charAt(0).toUpperCase() + color.slice(1);
+
+			sessionTimeElement.textContent = formattedColor;
+			sessionTimeElement.style.color = color;
+		  } else {
+			sessionTimeElement.textContent = 'No active session';
+			sessionTimeElement.style.color = 'black';
+		  }
+		}
 
         // Update next session time immediately
         updateNextSessionTime();
+		updateCurrentSessionTime();
 
         // Update next session time every minute
         setInterval(updateNextSessionTime, 60000);
+		setInterval(updateCurrentSessionTime, 60000);
     </script>
 </body>
 </html>
