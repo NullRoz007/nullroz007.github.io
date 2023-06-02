@@ -22,7 +22,7 @@
         }
 
         #party-schedule {
-            display: block; /* Initially hidden */
+            display: none; /* Initially hidden */
             position: absolute;
             top: 50%;
             left: 50%;
@@ -83,7 +83,7 @@
 			<th>4PM</th>
 		  </tr>
 		</thead>
-		<tbody>
+		<tbody>	
 		</tbody>
 	  </table>
     </div>
@@ -241,7 +241,12 @@
 
 			  // Create room name cell
 			  const roomNameCell = document.createElement('th');
-			  roomNameCell.textContent = room;
+			  const roomNumber = room.slice(4);
+			  var roomName = `Room ${roomNumber.charAt(0).toUpperCase() + roomNumber.slice(1)}`;
+			  
+			  if(room == 'mez') roomName = "Mez";
+			  
+			  roomNameCell.textContent = roomName;
 			  row.appendChild(roomNameCell);
 
 			  // Loop through the time slots
@@ -260,8 +265,10 @@
 			}
 		  }
 		}
-		
+
+		// Call the function to populate the table
 		populatePartyScheduleTable();
+
     </script>
 </body>
 </html>
