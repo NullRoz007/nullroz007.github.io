@@ -22,7 +22,7 @@
         }
 
         #party-schedule {
-            display: none; /* Initially hidden */
+            display: block; /* Initially hidden */
             position: absolute;
             top: 50%;
             left: 50%;
@@ -72,7 +72,20 @@
     </video>
 
     <div id="party-schedule" class="nes-container with-title">
-        <p class="title">Party Schedule</p>
+      <p class="title">Party Schedule</p>
+	  <table class="nes-table is-bordered is-centered">
+		<thead>
+		  <tr>
+			<th></th>
+			<th>10AM</th>
+			<th>12PM</th>
+			<th>2PM</th>
+			<th>4PM</th>
+		  </tr>
+		</thead>
+		<tbody>
+		</tbody>
+	  </table>
     </div>
     <div id="footer" class="nes-container is-centered with-title">
         <p class="title">Session times</p>
@@ -202,9 +215,8 @@
 		
 		async function loadPartySchedule() {
 		  try {
-			const response = await fetch('party_schedule.json');
+			const response = await fetch('https://raw.githubusercontent.com/NullRoz007/nullroz007.github.io/master/party_schedule.json');
 			const data = await response.json();
-			console.log(data);
 			return data;
 		  } catch (error) {
 			console.error('Failed to load party schedule:', error);
@@ -212,7 +224,44 @@
 		  }
 		}
 		
-		loadPartySchedule();
+		async function populatePartyScheduleTable() {
+		  const partySchedule = await loadPartySchedule();
+		  if (!partySchedule) {
+			// Handle error if party schedule data couldn't be loaded
+			return;
+		  }
+
+		  const tableBody = document.querySelector('table tbody');
+
+		  // Loop through each room
+		  for (const room in partySchedule.rooms) {
+			if (partySchedule.rooms.hasOwnProperty(room)) {
+			  const roomData = partySchedule.rooms[room];
+			  const row = document.createElement('tr');
+
+			  // Create room name cell
+			  const roomNameCell = document.createElement('th');
+			  roomNameCell.textContent = room;
+			  row.appendChild(roomNameCell);
+
+			  // Loop through the time slots
+			  for (const timeSlot in roomData) {
+				if (roomData.hasOwnProperty(timeSlot)) {
+				  const event = roomData[timeSlot];
+				  const eventCell = document.createElement('td');
+				  eventCell.id = `${room.toLowerCase()}-${timeSlot}`;
+				  eventCell.textContent = event;
+				  row.appendChild(eventCell);
+				}
+			  }
+
+			  // Append the row to the table body
+			  tableBody.appendChild(row);
+			}
+		  }
+		}
+		
+		populatePartyScheduleTable();
     </script>
 </body>
 </html>
