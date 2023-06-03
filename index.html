@@ -97,7 +97,7 @@
         <p class="title">Session times</p>
 
         <div id="footer-inner">
-            <span>Current Session</span>:
+            <span>Current Session:</span>
             <p id="current-session-time"></p>
             <div id="spacer"></div>
             <span>Next session at</span>
@@ -203,14 +203,7 @@
             }
         }
 
-        // Update next session time immediately
-        updateNextSessionTime();
-        updateCurrentSessionTime();
-
-        // Update next session time every minute
-        setInterval(updateNextSessionTime, 60000);
-        setInterval(updateCurrentSessionTime, 60000);
-
+        
         function showPartySchedule() {
 				partySchedule.style.display = 'block'; // Display the party schedule div
 				setTimeout(function() {
@@ -274,6 +267,13 @@
 
 		// Call the function to populate the table
 		populatePartyScheduleTable();
+		updateNextSessionTime();
+        updateCurrentSessionTime();
+		
+		setInterval(() => {
+			updateNextSessionTime();
+			updateCurrentSessionTime();
+		}, 60000);
 
     </script>
 </body>
