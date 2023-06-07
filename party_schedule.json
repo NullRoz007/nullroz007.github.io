@@ -2,26 +2,26 @@
   "rooms": {
     "room1": {
       "10": "None",
-      "12": "Shaun",
-      "14": "None",
-      "16": "None"
+      "12": "Mila",
+      "14": "Eli",
+      "16": "Alira"
     },
     "room2": {
-      "10": "Scarlet",
-      "12": "None",
-      "14": "Kingston",
-      "16": "None"
+      "10": "Nixon",
+      "12": "Darcy",
+      "14": "Emmy",
+      "16": "Aki"
     },
     "room3": {
-      "10": "None",
-      "12": "None",
-      "14": "None",
-      "16": "None"
+      "10": "Mila",
+      "12": "Milo",
+      "14": "Arthur & Finley",
+      "16": "Tami"
     },
     "mez": {
-      "10": "Jessica",
-      "12": "Jasper",
-      "14": "Haryton",
+      "10": "Meg",
+      "12": "Micah",
+      "14": "Benjamin",
       "16": "None"
     }
   }
